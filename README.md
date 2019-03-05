@@ -42,7 +42,7 @@ include_once "plugins2019/plg_coolui/footer.php";
 ```
 ### 4. Generate your project again.
 
-##Features
+## Features
 ![img-list-page](/documents/images/list-page.png)
 
 ![img-list-page-fixed-head](/documents/images/list-page-fixed-head.png)

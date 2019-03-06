@@ -59,6 +59,7 @@ $(function () {
     });
 
     //** PAGER CONTROL */
+    
     //Fixed records navigator on bottom
     $('.ew-grid-lower-panel').addClass('navbar fixed-bottom navbar-light bg-white p-0 pl-3 pt-2');
     //Create button toggle for toggle prev-next

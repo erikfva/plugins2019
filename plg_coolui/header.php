@@ -49,7 +49,7 @@ echo "<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, m
 /***********************************************************************/
 //AddStylesheet($plgConf["plugins_path"]."plg_coolui/coolui.css");
 $BODY_CLASS = "fixed-sn sidebar-collapse";
-$NAVBAR_CLASS .= " fixed-top navbar-expand-lg scrolling-navbar primary-color double-nav";
+$NAVBAR_CLASS = str_replace(array('navbar-light','bg-gray-light','border-bottom'),'',$NAVBAR_CLASS) . " fixed-top navbar-expand-lg scrolling-navbar primary-color double-nav";
 $SIDEBAR_CLASS .= " sn-bg-4 fixed";
 
 if(CurrentPageID() == "list"){ //Generate field labels class for vertical tables.

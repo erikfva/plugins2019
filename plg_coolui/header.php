@@ -1,11 +1,15 @@
 <?php
+include_once "plugins2019/phpfn.php";
 echo "<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, user-scalable=no' name='viewport' />";
 ?>
-
 <link rel="stylesheet" href="plugins2019/plg_coolui/coolui.css">
-<?php
-    include_once "plugins2019/phpfn.php";
+<script>
+jQuery.extend(ew, {
+	IS_TABLET: function(){ return !!ew.MOBILE_DETECT.tablet(); }
+});
+</script>
 
+<?php
     global $Language;
 	CurrentPage()->Heading = CurrentPageHeading();
 	

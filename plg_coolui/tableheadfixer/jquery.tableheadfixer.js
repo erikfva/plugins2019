@@ -29,7 +29,8 @@
                 delayTimer  =  null,                // 事件节流
                 defaults    =  {
                 'bgColor'   : '#eee',               // 表头的背景颜色
-                'z-index'   : '1'                   // 表头的z-index数
+                'z-index'   : '1',                   // 表头的z-index数
+                'stickyClass' : ''
               },
               table = this;
 
@@ -105,6 +106,7 @@
                 if(typeof options.beforeTransform == 'function' ){
                     topValue = options.beforeTransform(topValue);
                 }
+                th.toggleClass(options['stickyClass'], parseInt(topValue) > 0 );
                 th.css({
                     //'position'          : 'absolute',
                     //'top'               : topValue,

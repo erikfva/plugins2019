@@ -501,7 +501,9 @@ overflow: hidden;
 table.vertical-table { 
   border-collapse: collapse; min-width: 280px; margin-bottom: 15px !important}
 .vertical-table > thead { 
-  display: none; }
+  visibility: hidden;
+  position: absolute;
+  overflow: hidden; }
 .vertical-table > thead > tr, .vertical-table > tbody > tr{ 
   display: block; padding: 0.5em; 
  
@@ -540,15 +542,12 @@ table.vertical-table {
 /* Componentes personalizables mediante JS en coolui.js */
 /* Debes agregar las clases o ids de los componentes.   */
 /********************************************************/
-.ew-grid,
-.ew-row-link,
-.ew-search-panel button,
-input[type=text],
-.form-group.row {
+.lazy-render
+{
 	visibility:hidden;
 	opacity:0;
-  transition:opacity 0.3s linear;
-}
+  transition:opacity 0.1s linear;
+} 
 /******************************************************/
 
 /******* AdminLTE *******/
@@ -561,7 +560,6 @@ body{background-color: ghostwhite}
   }
 }
 .ew-breadcrumbs{z-index:100;position:fixed;right:3px}
-.brand-link.bg-write{display:none !important} /* js: mostrar si tiene texto */
 .ew-grid{display: inline-block} /* js: colocar a inherit si la pagina no es de tipo 'list'*/
 .content-header{padding-top: 0px; white-space: nowrap;} 
 .content-header .container-fluid{padding: 0px}

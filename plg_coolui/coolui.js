@@ -12,18 +12,14 @@ $(function () {
     //hide left menu 
     //$('[data-widget="pushmenu"]').PushMenu('collapse');
    
-    //show brand if not empty text
-    if($('.brand-link.bg-write').text() != ''){ 
-        $('.brand-link.bg-write').css({'display':'inline'});
-    }
     /****************************************************/
     //* Personaliza el estilo de tus componentes aqui *//
     /****************************************************/
 
     applyCoolForm();
 
-    $('input[type=text]:not([readonly])').parent().addClass('md-form');
-    $('.ew-search-panel button').addClass('btn-tb');
+    $('input[type=text]:not([readonly]):not(.cool-ui)').parent().addClass('md-form');
+/*     $('.ew-search-panel button').addClass('btn-tb');
     
     //Botones de edicion de registros en tablas de listas.
     $('.ew-row-link').addClass('btn-floating btn-xs').find('i').addClass('fa-1x');
@@ -31,32 +27,42 @@ $(function () {
     $('.ew-row-link.ew-edit').addClass('btn-cyan');
     $('.ew-row-link.ew-add').addClass('btn-success');
     $('.ew-row-link.ew-view').addClass('btn-info');
-    $('.ew-row-link.ew-copy').addClass('btn-light-green');
+    $('.ew-row-link.ew-copy').addClass('btn-light-green'); */
 
     showCoolComponents();
 
     //** TABLES */
+
+    //Make tables responsive for mobile.
+    //$('html').css('width', 'inherit');
+    //*let grid = $('.ew-grid:not(.ew-master-div');
+
+    //fix: x-scroollbars in large tablelist
+    //grid.length &&  grid.width()> $('html').width() && $('html').width( grid.width() );
+    
+    responsiveTable();
+
+    onResizeWindow(function () {
+        //Make tables responsive for mobile.
+        //*$('html').css('width', 'inherit');
+        responsiveTable();
+        //console.log($('.ew-grid').width(), window.innerWidth, $(navbar).width() );
+        //*let tableWidth = $('.ew-grid:not(.ew-master-div) .ew-table').width();
+
+        //*$('.ew-grid').length &&  $('html').width( tableWidth > $(navbar).width()? tableWidth : $(navbar).width() ); 
+        
+    });
+
     if(typeof $.fn.tableHeadFixer === 'function' ){ //If table-fixed-header load?
-        $('.ew-table').not('.hidden, .ew-master-table').find('thead').addClass('bg-white').end().tableHeadFixer({
+        $('.ew-table').not('.hidden, .ew-master-table').tableHeadFixer({
             "z-index" : 4,
+            stickyClass : 'indigo text-white',
             beforeTransform: function(top){
                 //console.log(top)
                 return top > 0? top + parseInt( $('.main-header').height() ) : top;
             }
         })
-    }
-
-    //Make tables responsive for mobile.
-    responsiveTable();
-    //fix: x-scroollbars in large tablelist
-    $('.ew-grid').length &&  $('.ew-grid').width()> $('html').width() && $('html').width( $('.ew-grid').width() );
-    
-    onResizeWindow(function () {
-        //Make tables responsive for mobile.
-        responsiveTable();
-        //console.log($('.ew-grid').width(), window.innerWidth, $(navbar).width() );
-        $('.ew-grid').length &&  $('html').width( $('.ew-grid').width()> $(navbar).width()? $('.ew-grid').width() : $(navbar).width() );
-    });
+    }  
 
     //** PAGER CONTROL */
     
@@ -117,37 +123,53 @@ $(function () {
     }
 
     function responsiveTable(){
-        $('.ew-grid:not(.ew-master-div)').each(function(){
-            //$(this).css('width','100%');
-            
-            if(!this.dataset.initialWidth){
-                this.dataset.initialWidth =  $(this).width();
-                //console.log(this.dataset.initialWidth);
-            }
+        let grid = $('.ew-grid:not(.ew-master-div');
+        ew.MOBILE_DETECT.constructor(window.navigator.userAgent);
+        ew.IS_MOBILE = !!ew.MOBILE_DETECT.mobile();
 
-            if(this.dataset.initialWidth > $(navbar).width() && $(navbar).width() <= 815  ){
-                $(this) //.css('width', currentWindowWidth <=812? currentWindowWidth + 'px':'initial')
-                .find('.ew-table').addClass('vertical-table');
-                $(this).css('width', $(navbar).width() - 10 );
-                
-            } else {
-                $(this).width(this.dataset.initialWidth)
-                .find('.ew-table').removeClass('vertical-table'); 
-            }                   
+        if(ew.IS_MOBILE && !ew.IS_TABLET() && grid.length){ //phone
+            grid.each(function(){
+                $(this).css('width', 'inherit')
+                .find('.ew-table:not(.vertical-table)').addClass('vertical-table');
+            });
+            return;
+        }
+
+
+        grid.each(function(){
+            //$(this).css('width','100%');
+            let table = $(this).find('.ew-table');
+            let thead = table.find('thead');
             
+            if(thead.width() <= $(navbar).width() ){             
+                table.removeClass('vertical-table');
+            }else{
+                table.toggleClass('vertical-table', $(navbar).width() <= 815 );               
+            } 
+        //    $(this).css('width', table.hasClass('vertical-table')?'inherit': ( thead.width() + 20 + 'px' ) );     
+            //fix: x-scroollbars in large tablelist
+            $(this).width()> $('html').width() && $('html').width( $(this).width() + 20);          
         });
     }
 
     function applyCoolForm(op){
         
         $( (op && op.container) || window.document).find('.form-group.row').each(function(){
-            let input = $(this).find('input:text:not([readonly])').attr('placeholder', '').wrap('<div class="md-form"></div>')
-            .blur(function() {
+            let input = $(this).find('input:text:not([readonly])');
+            let isCoolUI = input.hasClass('cool-ui');
+            if(!isCoolUI && input.length){
+                input.wrap('<div class="md-form"></div>').attr('placeholder', '').addClass('cool-ui');
+                $(input[0].labels[0])
+                    .removeClass('col-form-label')
+                    .insertAfter(input);
+                input.val() != '' && input.siblings('label, i').addClass('active');
+            }
+            //.wrap('<div class="md-form"></div>')
+            input.blur(function() {
                 //console.log(this);
                 if(this.value == '') $(this).siblings('label, i').removeClass('active');
             })
-            input.length &&  $(input[0].labels[0]).removeClass('col-form-label').insertAfter(input);
-            if(input.val() != '') input.siblings('label, i').addClass('active');
+
         })
         
         //Reestableciendo los componentes personalizables
@@ -157,7 +179,6 @@ $(function () {
     function showCoolComponents(op){
         //Reestableciendo los componentes personalizables
         let container =  $( (op && op.container) || window.document);
-        let costumizable = '.ew-grid, .ew-row-link, .ew-search-panel button, input[type=text],.form-group.row';
-        container.find(costumizable).css({'visibility':'inherit','opacity':'inherit'});
+        container.find('.lazy-render').css({'visibility':'inherit','opacity':'inherit'});
     }
 })

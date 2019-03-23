@@ -4,6 +4,7 @@ echo "<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, m
 ?>
 <link rel="stylesheet" href="plugins2019/plg_coolui/coolui.css">
 <script>
+
 jQuery.extend(ew, {
 	IS_TABLET: function(){ return !!ew.MOBILE_DETECT.tablet(); }
 });
@@ -52,16 +53,23 @@ jQuery.extend(ew, {
 /* CoolUI : Include special css styles
 /***********************************************************************/
 //AddStylesheet($plgConf["plugins_path"]."plg_coolui/coolui.css");
-$BODY_CLASS = "fixed-sn sidebar-collapse";
+$MobileDetect = new \Mobile_Detect();
+
+$BODY_CLASS = "fixed-sn sidebar-collapse".($MobileDetect->isMobile()?" mobile":"");
 $NAVBAR_CLASS = str_replace(array('navbar-light','bg-gray-light','border-bottom'),'',$NAVBAR_CLASS) . " fixed-top navbar-expand-lg scrolling-navbar primary-color double-nav";
 $SIDEBAR_CLASS .= " sn-bg-4 fixed";
 
 if(CurrentPageID() == "list"){ //Generate field labels class for vertical tables.
-	echo "<style>";
+	$orderField = "";     
+	$orderBy = CurrentPage()->getSessionOrderBy();
+	$orderType = strpos($orderBy, "ASC")!==false?"ASC":"DESC";
+
+	echo "<style>\n";
 	foreach(CurrentPage()->fields as $FldVar => $field) {
 		$FldCaption = 	$field->caption();
 		$ClassName = CurrentPage()->TableVar."_".$FldVar;
 		echo <<<END
+		body.mobile .ew-grid:not(.ew-master-div) table td .$ClassName::before,
 		.vertical-table td .$ClassName:before{
 			content:"$FldCaption:    ";
 			white-space: pre;
@@ -69,14 +77,18 @@ if(CurrentPageID() == "list"){ //Generate field labels class for vertical tables
 			font-weight: bold;
 		}\n
 END;
+		if(strpos($orderBy, '`'.$FldVar.'`')!==false){
+			$SortImage = $orderType == 'ASC'?'asc_sort.svg':'des_sort.svg';
+			echo <<<END
+			body.mobile .ew-grid:not(.ew-master-div) table td .$ClassName::before,
+			.vertical-table td .$ClassName::before{
+				content:"$FldCaption     ";
+				background: url("plugins2019/plg_coolui/img/svg/$SortImage") no-repeat;
+				background-position-x: right;
+			}\n
+END;
+		}
 	}
 	echo "</style>";
-}
-?>
-<?php
-//tableheadfixer
-if(isset(CurrentPage()->PageID) && CurrentPage()->PageID == "list"){
-	if(file_exists("plugins2019/plg_coolui/tableheadfixer/jquery.tableheadfixer.js"))
-		AddClientScript("plugins2019/plg_coolui/tableheadfixer/jquery.tableheadfixer.js");	
 }
 ?>

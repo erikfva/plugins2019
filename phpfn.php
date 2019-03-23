@@ -40,6 +40,19 @@ function &Breadcrumb() {
 function IsMobile() {
     return phpfn\IsMobile(); 
 }
+// Check if tablet device
+function IsTablet() {
+    global $MobileDetect, $IsTablet;
+    if (isset($IsTablet))
+		return $IsTablet;
+
+	if (!isset($MobileDetect)) {
+		$MobileDetect = new \Mobile_Detect();
+		$IsTablet = $MobileDetect->isTablet();
+	}
+	return $IsTablet;
+}
+
 function CurrentPageID(){
     return phpfn\CurrentPageID();
 }
@@ -70,5 +83,13 @@ function CurrentPageHeading() {
 // Get domain URL
 function DomainUrl() {
     return phpfn\DomainUrl();
+}
+// Get current URL
+function CurrentUrl() {
+    return phpfn\CurrentUrl();    
+}
+// Remove CrLf from text
+function RemoveCrLf($str){
+    return str_replace(["\r", "\n", "\t"], ["", "", ""], $str);
 }
 ?>

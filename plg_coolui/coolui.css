@@ -195,14 +195,14 @@
   padding-right: 10px;
   display: inline-block; }
 
-  .ew-form:not(.ew-list-form):not(.ew-pager-form), table.ew-master-table.ew-vertical {
+/*   .ew-form:not(.ew-list-form):not(.ew-pager-form), table.ew-master-table.ew-vertical {
     width: 500px;
     margin-left: 0; }
   
 @media (min-width: 768px) {
   .ew-form:not(.ew-list-form):not(.ew-pager-form), table.ew-master-table.ew-vertical {
     width: 800px; } 
-}
+} */
 @media (max-width: 812px) {
   .container-fluid {
     padding: initial;
@@ -461,6 +461,7 @@ overflow: hidden;
   z-index:2;
 }
 /* Estilos */
+.transparent{ background-color: transparent !important}
 .goobutton {
   background: #0370ea;
   background: -moz-linear-gradient(top, #008dfd 0, #0370ea 100%);
@@ -497,41 +498,6 @@ overflow: hidden;
   cursor: default;
 }
 
-/*transform vertical tables */
-table.vertical-table { 
-  border-collapse: collapse; min-width: 280px; margin-bottom: 15px !important}
-.vertical-table > thead { 
-  visibility: hidden;
-  position: absolute;
-  overflow: hidden; }
-.vertical-table > thead > tr, .vertical-table > tbody > tr{ 
-  display: block; padding: 0.5em; 
- 
-}
-.vertical-table > thead > tr > td,  .vertical-table > tbody > tr > td{ 
-  display: block; }
-  .vertical-table > tbody > tr{clear:both}
-/* .vertical-table > tbody > tr:nth-child(even) { 
-  background-color: rgb(224, 224, 224,.3); } */
-.vertical-table > tbody > td:not(:last-child) { 
-  border-bottom: 1px solid #DDD; }
-
-.vertical-table  .ew-list-option-body{float:right}
-
-@media screen and (min-width: 300em) {
-  .vertical-table > thead { 
-    display: table-header-group; }
-  .vertical-table > thead > th:not(:last-child) { 
-    border-right: 1px solid #999; }
-  .vertical-table > thead > tr, .vertical-table > tbody tr { 
-    display: table-row; padding: 0; }
-  .vertical-table > thead > tr > td, .vertical-table > tbody > tr > td  { 
-    display: table-cell; }
-  .vertical-table > tbody > td:not(:last-child) { 
-    border-bottom: none; 
-    border-right: 1px solid #DDD; }
-}
-
 /* efecto sombra 3D */
 .shadow-b{
   -webkit-box-shadow: 0px 10px 21px 0px rgba(50, 50, 50, 0.41);
@@ -553,15 +519,28 @@ table.vertical-table {
 /******* AdminLTE *******/
 html{overflow-x:auto} 
 body{background-color: ghostwhite}
-.ew-layout:{overflow-x: visible}
-@media (max-width: 992px){
-  .content-header .content{
-    padding-top: 20px;
-  }
+.main-header {
+  z-index: 1000;
 }
-.ew-breadcrumbs{z-index:100;position:fixed;right:3px}
+.ew-layout:{overflow-x: visible}
+.ew-breadcrumbs{z-index:100;position:fixed;right:3px;}
+.mobile .breadcrumb-item>#ew-page-caption{line-height: 3; color:white}
+.mobile .ew-breadcrumbs{
+  top:0px;
+  z-index: 1010;
+}
+.mobile .breadcrumb-item>a:not(.btn){
+  display: inline-block;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color:cyan;
+  line-height: 3;
+}
+
 .ew-grid{display: inline-block} /* js: colocar a inherit si la pagina no es de tipo 'list'*/
 .content-header{padding-top: 0px; white-space: nowrap;} 
+.mobile .content-header{padding-bottom: 0px} 
 .content-header .container-fluid{padding: 0px}
 #sidebar-overlay {
   background-color: rgb(0, 0, 0, 0.5)
@@ -671,3 +650,71 @@ body{background-color: ghostwhite}
 @media (min-width: 415px){ 
   .ew-grid-lower-panel:not(.collapse-pager) .close-pager{ display: none}
 }
+body.mobile .ew-grid:not(.ew-master-div){
+  width : inherit;
+}
+/*transform vertical tables */
+body.mobile .ew-grid:not(.ew-master-div) table,
+table.vertical-table { 
+  border-collapse: collapse; min-width: 280px; margin-bottom: 15px !important
+}
+body.mobile .ew-grid:not(.ew-master-div) table > thead,
+.vertical-table > thead { 
+  visibility: hidden;
+  position: absolute;
+  overflow: hidden; 
+}
+body.mobile .ew-grid:not(.ew-master-div) table > thead > tr,
+body.mobile .ew-grid:not(.ew-master-div) table > tbody > tr,
+.vertical-table > thead > tr, 
+.vertical-table > tbody > tr{ 
+  display: block; padding: 0.5em; 
+  clear: both; 
+}
+body.mobile .ew-grid:not(.ew-master-div) table > thead > tr > td,
+body.mobile .ew-grid:not(.ew-master-div) table > tbody > tr > td,
+.vertical-table > thead > tr > td,  
+.vertical-table > tbody > tr > td{ 
+  display: block; 
+  padding: .5rem .5rem
+}
+
+/* .vertical-table > tbody > tr{clear:both} */
+/* .vertical-table > tbody > tr:nth-child(even) { 
+  background-color: rgb(224, 224, 224,.3); } */
+body.mobile .ew-grid:not(.ew-master-div) table > tbody > td:not(:last-child),
+.vertical-table > tbody > td:not(:last-child) { 
+  border-bottom: 1px solid #DDD; }
+body.mobile .ew-grid:not(.ew-master-div) table .ew-list-option-body,
+.vertical-table  .ew-list-option-body{float:right}
+
+@media screen and (min-width: 300em) {
+  body.mobile .ew-grid:not(.ew-master-div) table > thead,
+  .vertical-table > thead { 
+    display: table-header-group; }
+  body.mobile .ew-grid:not(.ew-master-div) table > thead > th:not(:last-child),
+  .vertical-table > thead > th:not(:last-child) { 
+    border-right: 1px solid #999; }
+  body.mobile .ew-grid:not(.ew-master-div) table > thead > tr, 
+  body.mobile .ew-grid:not(.ew-master-div) table > tbody tr,
+  .vertical-table > thead > tr, 
+  .vertical-table > tbody > tr { 
+    display: table-row; padding: 0; }
+  body.mobile .ew-grid:not(.ew-master-div) table > thead > tr > td, 
+  body.mobile .ew-grid:not(.ew-master-div) table > tbody > tr > td ,
+  .vertical-table > thead > tr > td, 
+  .vertical-table > tbody > tr > td  { 
+    display: table-cell; }
+  body.mobile .ew-grid:not(.ew-master-div) table > tbody > td:not(:last-child),
+  .vertical-table > tbody > td:not(:last-child) { 
+    border-bottom: none; 
+    border-right: 1px solid #DDD; }
+}
+.btn-sort{ right:0; visibility: hidden; opacity: 0}
+body.mobile .btn-sort,
+.vertical-table .btn-sort{ 
+  visibility: visible !important;
+  opacity: 1 !important;
+} 
+
+

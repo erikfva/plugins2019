@@ -1,86 +1,54 @@
 $(function () {
-    "use strict";
-    var navbar = document.querySelector('.main-header.navbar');
-    
-    //hide preload spinner
-    $(".preloader").fadeOut(50);
+    "use strict";   
+
     //show preloader when click on html elements
-    $('.ew-row-link, .btn:not(.dropdown-toggle,.ew-search-toggle,.datepickerbutton) , .ew-breadcrumbs a,.nav-sidebar .nav-item').on('click',function(){ 
-        $(".preloader").show();
+    $('.ew-table-header-cell>.dropdown-item, .nav-link:not(.active):not([data-widget]), .ew-row-link, .btn:not(.dropdown-toggle,.ew-search-toggle,.datepickerbutton) , .ew-breadcrumbs a').on('click',function(){ 
+        //$(".preloader").show();
+        showSpinner();
     });
 
-    //hide left menu 
-    //$('[data-widget="pushmenu"]').PushMenu('collapse');
+    var navbar = document.querySelector('.main-header.navbar');
+    mobileDetect();
    
     /****************************************************/
     //* Personaliza el estilo de tus componentes aqui *//
     /****************************************************/
-
     applyCoolForm();
+    $('input[type=text]:not([readonly]):not(.cool-ui)').addClass('cool-ui').parent().addClass('md-form');
 
-    $('input[type=text]:not([readonly]):not(.cool-ui)').parent().addClass('md-form');
-/*     $('.ew-search-panel button').addClass('btn-tb');
+    //** TABLES */  
     
-    //Botones de edicion de registros en tablas de listas.
-    $('.ew-row-link').addClass('btn-floating btn-xs').find('i').addClass('fa-1x');
-    $('.ew-row-link.ew-delete').addClass('btn-danger');
-    $('.ew-row-link.ew-edit').addClass('btn-cyan');
-    $('.ew-row-link.ew-add').addClass('btn-success');
-    $('.ew-row-link.ew-view').addClass('btn-info');
-    $('.ew-row-link.ew-copy').addClass('btn-light-green'); */
+    var table =  $('.ew-table').not('.hidden, .ew-master-table');
+    table.each(function(){
+        this.dataset.theadw = $(this).find('thead').width();
+        if(typeof $.fn.tableHeadFixer === 'function' ){ //If table-fixed-header load?
+            $(this).tableHeadFixer({
+                "z-index" : 4,
+                stickyClass : 'indigo text-white',
+                beforeTransform: function(top){
+                    //console.log(top)
+                    return top > 0? top + parseInt( $('.main-header').height() ) : top;
+                }
+            })
+        }
+    })
+
+    responsiveTable();
+        
+    //*--------------------------------------------------- */
 
     showCoolComponents();
 
-    //** TABLES */
-
-    //Make tables responsive for mobile.
-    //$('html').css('width', 'inherit');
-    //*let grid = $('.ew-grid:not(.ew-master-div');
-
-    //fix: x-scroollbars in large tablelist
-    //grid.length &&  grid.width()> $('html').width() && $('html').width( grid.width() );
-    
-    responsiveTable();
-
     onResizeWindow(function () {
-        //Make tables responsive for mobile.
-        //*$('html').css('width', 'inherit');
-        responsiveTable();
-        //console.log($('.ew-grid').width(), window.innerWidth, $(navbar).width() );
-        //*let tableWidth = $('.ew-grid:not(.ew-master-div) .ew-table').width();
-
-        //*$('.ew-grid').length &&  $('html').width( tableWidth > $(navbar).width()? tableWidth : $(navbar).width() ); 
-        
+        mobileDetect();
+        responsiveTable();        
     });
 
-    if(typeof $.fn.tableHeadFixer === 'function' ){ //If table-fixed-header load?
-        $('.ew-table').not('.hidden, .ew-master-table').tableHeadFixer({
-            "z-index" : 4,
-            stickyClass : 'indigo text-white',
-            beforeTransform: function(top){
-                //console.log(top)
-                return top > 0? top + parseInt( $('.main-header').height() ) : top;
-            }
-        })
-    }  
-
+   
     //** PAGER CONTROL */
-    
-    //Fixed records navigator on bottom
-    $('.ew-grid-lower-panel').addClass('navbar fixed-bottom navbar-light bg-white p-0 pl-3 pt-2');
-    //Create button toggle for toggle prev-next
     if($('.ew-prev-next').length){
-        let btnTogglePager =  $('<a class="pl-1 btn-floating btn-primary btn-toggle-pager"><i class="fa fa-forward"></i></a>');
-        btnTogglePager.click(function(){
-            $('.ew-grid-lower-panel').removeClass('collapse-pager');
-        }).appendTo('.ew-grid-lower-panel');
-        let btnClosePager = $('<a class="btn-floating btn-info btn-xs close-pager"><i class="fa fa-close fa-1x"></i></a>');
-        btnClosePager.appendTo('.ew-grid-lower-panel')
-        .click(function(){
-            $('.ew-grid-lower-panel').addClass('collapse-pager');
-        });
         window.pagerWidth = $(navbar).width();
-        if($(navbar).width() <= 414) $('.ew-grid-lower-panel').addClass('collapse-pager');
+        if($(navbar).width() > 414) $('.ew-grid-lower-panel').removeClass('collapse-pager');
         onResizeWindow(function () {
             if( window.pagerWidth > 414 && $(navbar).width() <= 414 )
                 $('.ew-grid-lower-panel').toggleClass('collapse-pager', $(navbar).width() <= 414);
@@ -88,24 +56,24 @@ $(function () {
         })
     }
 
-
     //** MODALS DIALOGS */
-    var hiddeVScroll = function (event) {
+    var hideVScroll = function (event) {
         /* Haz algo aquí */
         $('html').css('overflow-y','hidden');
     };
 
     $('#ew-modal-dialog').on('shown.bs.modal', function () {
+        hideSpinner();
         applyCoolForm({container:this});
         setTimeout(() => {
-            hiddeVScroll();
-            window.addEventListener('resize',hiddeVScroll,false);
+            hideVScroll();
+            window.addEventListener('resize',hideVScroll,false);
             $('#ew-modal-dialog').scrollTop(0);
         }, 200);
         
     }).on('hidden.bs.modal', function(){
         $('html').css('overflow-y','auto');
-        window.removeEventListener('resize', hiddeVScroll, false);
+        window.removeEventListener('resize', hideVScroll, false);
     })
 
     function onResizeWindow(f,t){
@@ -122,34 +90,37 @@ $(function () {
         });
     }
 
-    function responsiveTable(){
-        let grid = $('.ew-grid:not(.ew-master-div');
+    function mobileDetect(){
         ew.MOBILE_DETECT.constructor(window.navigator.userAgent);
         ew.IS_MOBILE = !!ew.MOBILE_DETECT.mobile();
+        $('body').toggleClass('mobile', ew.IS_MOBILE && !ew.IS_TABLET());     
+    }
 
-        if(ew.IS_MOBILE && !ew.IS_TABLET() && grid.length){ //phone
-            grid.each(function(){
-                $(this).css('width', 'inherit')
-                .find('.ew-table:not(.vertical-table)').addClass('vertical-table');
-            });
-            return;
-        }
-
+    function responsiveTable(){
+        mobileDetect();
+        if(ew.IS_MOBILE && !ew.IS_TABLET()) return;
+        let grid = $('.ew-grid:not(.ew-master-div');
 
         grid.each(function(){
             //$(this).css('width','100%');
             let table = $(this).find('.ew-table');
-            let thead = table.find('thead');
-            
-            if(thead.width() <= $(navbar).width() ){             
+            let theadw = parseInt(table[0].dataset.theadw || table.find('thead').width());
+            $('html').css('width', 'inherit');
+
+            let navbarw = parseInt($(navbar).width());
+            if(theadw <= navbarw ){             
                 table.removeClass('vertical-table');
             }else{
                 table.toggleClass('vertical-table', $(navbar).width() <= 815 );               
             } 
         //    $(this).css('width', table.hasClass('vertical-table')?'inherit': ( thead.width() + 20 + 'px' ) );     
             //fix: x-scroollbars in large tablelist
-            $(this).width()> $('html').width() && $('html').width( $(this).width() + 20);          
-        });
+            if (table.hasClass('vertical-table')){
+                $('html').css('width',  $(navbar).width() );
+            } else {
+                theadw > $('html').width() && $('html').width( theadw + 70);
+            }                     
+        })
     }
 
     function applyCoolForm(op){
@@ -175,7 +146,12 @@ $(function () {
         //Reestableciendo los componentes personalizables
         if(op && op.container) showCoolComponents(op.container);
     }
-
+    function hideSpinner(){
+        $("#mdb-preloader, .mdb-preloader").hide();
+    }
+    function showSpinner(){
+        $("#mdb-preloader").show();
+    }
     function showCoolComponents(op){
         //Reestableciendo los componentes personalizables
         let container =  $( (op && op.container) || window.document);

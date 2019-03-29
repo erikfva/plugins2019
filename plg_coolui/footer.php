@@ -123,7 +123,7 @@ if(isset(CurrentPage()->PageID) && CurrentPage()->PageID == "list"){
 			and not(contains(@class, 'ew-master-table'))]", Query::TYPE_XPATH);
 			foreach($tables as $table) {
 				$MobileDetect->isMobile() && !$MobileDetect->isTablet() && ($table->class = @$table->class. ' vertical-table');
-				!$MobileDetect->isMobile() && ($grid->class = @$grid->class. ' lazy-render');
+				//!$MobileDetect->isMobile() && ($grid->class = @$grid->class. ' lazy-render');
 				//if($MobileDetect->isMobile()){
 					$orderHTML = (string) $table->find('thead')[0];
 					$orderHTML = str_replace(
@@ -179,7 +179,7 @@ if(isset(CurrentPage()->PageID) && CurrentPage()->PageID == "list"){
 		//Fixed records navigator on bottom
 		$elements = $document->find('.ew-grid-lower-panel');
 		foreach($elements as $element) {
-			$element->class = @$element->class. ' navbar fixed-bottom navbar-light bg-white p-0 pl-3 pt-2 collapse-pager';	
+			$element->class = @$element->class. ' border-top navbar fixed-bottom navbar-light bg-white p-0 pl-3 pt-2 collapse-pager';	
 			
 			if($element->has('.ew-prev-next')){
 				$btnTogglePager = new Element('span', '');

@@ -2,10 +2,10 @@ $(function () {
     "use strict";   
 
     //show preloader when click on html elements
-    $('.ew-table-header-cell>.dropdown-item, .nav-link:not(.active):not([data-widget]), .ew-row-link, .btn:not(.dropdown-toggle,.ew-search-toggle,.datepickerbutton) , .ew-breadcrumbs a').on('click',function(){ 
+     $('.ew-table-header-cell>.dropdown-item, .nav-link:not(.active):not([data-widget]), .ew-row-link, .btn:not(.dropdown-toggle,.ew-search-toggle,.datepickerbutton) , .ew-breadcrumbs a').on('click',function(){ 
         //$(".preloader").show();
         showSpinner();
-    });
+    }); 
 
     var navbar = document.querySelector('.main-header.navbar');
     mobileDetect();
@@ -147,10 +147,14 @@ $(function () {
         if(op && op.container) showCoolComponents(op.container);
     }
     function hideSpinner(){
-        $("#mdb-preloader, .mdb-preloader").hide();
+        $("#mdb-preloader, .mdb-preloader").hide().removeClass('pending');
     }
     function showSpinner(){
-        $("#mdb-preloader").show();
+        $("#mdb-preloader").addClass('pending');
+        setTimeout(() => {
+            $("#mdb-preloader.pending").show().removeClass('pending');
+        }, 500);
+        
     }
     function showCoolComponents(op){
         //Reestableciendo los componentes personalizables

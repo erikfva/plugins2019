@@ -404,7 +404,7 @@ input.iOS7:active {
 	min-height:150px;
 	min-width:150px;
 	display:block;
-	background: url('images/pictures.png') no-repeat;
+	background: url('img/pictures.png') no-repeat;
 	background-position : 10px 10px;
 	float:none !important;
 }
@@ -435,7 +435,7 @@ input.iOS7:active {
 	top:32px;
 }
 .template-download .name a{
-background: url('images/download32.png') no-repeat;
+background: url('img/download32.png') no-repeat;
 border:none;
 width: 32px;
 height: 32px;
@@ -448,17 +448,19 @@ overflow: hidden;
 .template-download .delete:before {
     content: "\f1f8";
     font-family: 'FontAwesome';
-    color:red;
+    color:white;
     font-size: 20px;
 }
 .template-download .delete{
-	background-image:inherit;
-	text-shadow: 0 0px 0;
-	background: #e0e0e0;
-	color:#e0e0e0;
-	width:35px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  padding: 0;
   overflow: hidden;
   z-index:2;
+  font-size: 0px;
+  background-color: #ff3547!important;
+  color: #fff!important;
 }
 /* Estilos */
 .transparent{ background-color: transparent !important}
@@ -717,4 +719,7 @@ body.mobile .btn-sort,
   opacity: 1 !important;
 } 
 
+.vertical-table tbody tr{
+  margin-bottom: 20px;
 
+}

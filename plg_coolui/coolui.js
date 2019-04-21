@@ -2,7 +2,7 @@ $(function () {
     "use strict";   
 
     //show preloader when click on html elements
-     $('.ew-table-header-cell>.dropdown-item, .nav-link:not(.active):not([data-widget]), .ew-row-link, .btn:not(.dropdown-toggle,.ew-search-toggle,.datepickerbutton) , .ew-breadcrumbs a').on('click',function(){ 
+     $('.ew-table-header-cell>.dropdown-item, .nav-link:not(.active):not([data-widget]):not([data-toggle]):not([href="#"]), .ew-row-link, .btn:not(.fileinput-button,.dropdown-toggle,.ew-search-toggle,.datepickerbutton,[data-dismiss]) , .ew-breadcrumbs a').on('click',function(){ 
         //$(".preloader").show();
         showSpinner();
     }); 
@@ -62,8 +62,11 @@ $(function () {
         $('html').css('overflow-y','hidden');
     };
 
-    $('#ew-modal-dialog').on('shown.bs.modal', function () {
-        hideSpinner();
+    $('#ew-modal-dialog, #ew-message-box, #ew-add-opt-dialog, #ew-import-dialog, #ew-prompt').on('shown.bs.modal', function () {
+        setTimeout(() => {
+           hideSpinner(); 
+        }, 200);
+        
         applyCoolForm({container:this});
         setTimeout(() => {
             hideVScroll();

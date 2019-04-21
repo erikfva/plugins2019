@@ -56,6 +56,8 @@ if(isset(CurrentPage()->PageID) && CurrentPage()->PageID == "list"){
 	//*****************/
 	//input text styles
 	//*****************/
+
+	
 	$elements = $document->find('.form-group.row');
 	foreach($elements as $element) {
 		$input = @$element->findInDocument('input[type="text"]')[0];
@@ -81,6 +83,8 @@ if(isset(CurrentPage()->PageID) && CurrentPage()->PageID == "list"){
 		$input->parent()->class = @$input->parent()->class . " md-form";
 		$input->class = @$input->class. ' cool-ui';
 	}
+
+
 	/*-------------------------------------------------*/
 
 	//***********************************/
@@ -93,9 +97,20 @@ if(isset(CurrentPage()->PageID) && CurrentPage()->PageID == "list"){
     
 	//Botones de edicion de registros en tablas de listas.
 	if(CurrentPageID() == "list"){
+		
+		$listbtngroup = $document->find('.ew-list-option-body .ew-btn-group');
+		foreach($listbtngroup as $btngroup) {
+			$btngroup->class = 'pull-left';
+		}
+		/*
+		$btngroup = $listoptionbody->find('.ew-btn-group');
+		foreach($btngroup as $group) {
+			$group->class = '';
+		}*/
+		
 		$elements = $document->find('.ew-row-link');
 		foreach($elements as $btn) {
-			$btn->class = @$btn->class. ' btn-floating btn-xs cool-ui';	//$('.ew-row-link').addClass('btn-floating btn-xs').find('i').addClass('fa-1x');
+			$btn->class = @$btn->class. ' btn-floating btn-xs cool-ui mr-1';	//$('.ew-row-link').addClass('btn-floating btn-xs').find('i').addClass('fa-1x');
 			foreach($btn->findInDocument('i') as $i) {
 				$i->class = @$i->class. ' fa-1x';
 			}

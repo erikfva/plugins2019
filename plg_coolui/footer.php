@@ -19,7 +19,12 @@ if(isset(CurrentPage()->PageID) && CurrentPage()->PageID == "list"){
 
 	// Material Select Initialization
 	$(document).ready(function () {
-	  $('.mdb-select').material_select();
+		$('.mdb-select').materialSelect();		
+		setTimeout(() => {
+			$('div.select-wrapper.mdb-select').on('click', function(e){
+				e.stopPropagation();
+			})
+		}, 1000);
 	});
 
 	// Tooltips Initialization
@@ -62,6 +67,8 @@ if(isset(CurrentPage()->PageID) && CurrentPage()->PageID == "list"){
 	foreach($elements as $element) {
 		$input = @$element->findInDocument('input[type="text"]')[0];
 		$label = @$element->findInDocument('label')[0];
+		$select = @$element->findInDocument('select')[0];
+		$select && $select->class = str_replace('custom-select','mdb-select',@$select->class) . " md-form colorful-select dropdown-primary";
 		//$input = $element;
 		$input && $input->class = @$input->class. ' cool-ui';
 		if($input && empty($input->readonly)){

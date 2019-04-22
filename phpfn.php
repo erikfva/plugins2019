@@ -1,6 +1,6 @@
 <?php
 /** CONFIG YOUR MAIN PROJECT NAMESPACE HERE!!! **/
-use PHPMaker2019\abt as phpfn;
+use PHPMaker2019\gsadmin as phpfn;
 /* **************************************** */
 
 define("EW_PROJECT_NAME", phpfn\PROJECT_NAME, TRUE); // Project name
